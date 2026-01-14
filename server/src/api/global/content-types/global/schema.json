@@ -27,6 +27,13 @@
       "type": "component",
       "repeatable": false,
       "component": "layout.footer"
+    },
+    "placeholder": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

@@ -3,20 +3,27 @@ import { ImageProps } from "@/types";
 import Link from "next/link";
 import { StrapiImage } from "./StrapiImage";
 import { formatDate } from "@/utils/format-date";
+import { getGlobalSettings } from "@/data/loaders";
 
 export interface CardProps {
   documentId: string;
   title: string;
   description: string;
   slug: string;
-  image: ImageProps;
+  image?: ImageProps;
   price?: number;
   startDate?: string;
   createdAt: string;
   basePath: string;
 }
 
-export function Card({
+async function loader() {
+  const { data } = await getGlobalSettings();
+  if (!data) throw new Error("Failed to fetch global settings");
+  return { placeholder: data?.placeholder };
+}
+
+export async function Card({
   title,
   description,
   slug,
@@ -26,12 +33,13 @@ export function Card({
   startDate,
   basePath,
 }: Readonly<CardProps>) {
+  const { placeholder } = await loader();
   return (
     <Link href={`/${basePath}/${slug}`} className="content-items__card">
       <div className="content-items__card-img">
         <StrapiImage
-          src={image.url}
-          alt={image.alternativeText || "No alternative text provided"}
+          src={image?.url || placeholder?.url }
+          alt={image?.alternativeText || "No alternative text provided"}
           width={400}
           height={400}
         />

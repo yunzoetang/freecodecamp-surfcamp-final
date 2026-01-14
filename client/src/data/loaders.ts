@@ -3,6 +3,7 @@ import { fetchAPI } from "@/utils/fetch-api";
 import { getStrapiURL } from "@/utils/get-strapi-url";
 
 const BASE_URL = getStrapiURL(); 
+const BLOG_PAGE_SIZE = 3;
 
 const homePageQuery = qs.stringify(
   {
@@ -131,7 +132,10 @@ const globalSettingQuery = qs.stringify({
         navigation: true,
         policies: true,
       },
-    }
+    },
+    placeholder: {
+      fields: ["url", "alternativeText"],
+    },
   },
 });
 
@@ -142,13 +146,25 @@ export async function getGlobalSettings() {
   return fetchAPI(url.href, { method: "GET" });
 }
 
-export async function getContent(path: string, featured?: boolean) {
+export async function getContent(
+  path: string,
+  featured?: boolean,
+  query?: string,
+  page?: string
+) {
   const url = new URL(path, BASE_URL);
 
   url.search = qs.stringify({
-    sort: ["createdAt:desc"],
     filters: {
+      $or: [
+        { title: { $containsi: query } },
+        { description: { $containsi: query } },
+      ],
       ...(featured && { featured: { $eq: featured } }),
+    },
+    pagination: {
+      pageSize: BLOG_PAGE_SIZE,
+      page: parseInt(page || "1"),
     },
     populate: {
       image: {
