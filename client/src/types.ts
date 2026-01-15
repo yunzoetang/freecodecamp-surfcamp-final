@@ -69,7 +69,7 @@ export interface InfoBlockProps extends Base<"blocks.info-block"> {
 export interface FeaturedArticleProps extends Base<"blocks.featured-article"> {
   headline: string;
   excerpt: string;
-  link: LinkProps;
+  cta: LinkProps;
   image: ImageProps;
 }
 
