@@ -1,8 +1,9 @@
 import { ArticleProps } from "@/types";
-import { getContent, getGlobalSettings } from "@/data/loaders";
+import { getContent } from "@/data/loaders";
 
 import { PaginationComponent } from "@/components/PaginationComponent";
 import { Search } from "@/components/Search";
+import { CardProps } from "./Card";
 
 interface ContentListProps {
   headline: string;

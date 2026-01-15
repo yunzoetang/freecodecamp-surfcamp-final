@@ -17,6 +17,36 @@ export interface LogoProps {
   image: ImageProps;
 }
 
+export interface ArticleProps {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  slug: string;
+  image: ImageProps;
+  author: string;
+  featured: boolean;
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventProps {
+  id: number;
+  documentId: string;
+  title: string;
+  description: string;
+  slug: string;
+  image: ImageProps;
+  author: string;
+  featured: boolean;
+  price: string;
+  startDate: string;
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 type ComponentType =
   | "blocks.hero-section"
   | "blocks.info-block"
@@ -71,35 +101,6 @@ export interface FeaturedArticleProps extends Base<"blocks.featured-article"> {
   excerpt: string;
   cta: LinkProps;
   image: ImageProps;
-}
-
-export interface SubscribeProps extends Base<"blocks.subscribe"> {
-  headline: string;
-  content: string;
-  placeholder: string;
-  buttonText: string;
-}
-
-export interface ArticleProps extends PageBase {
-}
-
-export interface EventProps extends PageBase {
-  price: string;
-  startDate: string;
-}
-
-interface PageBase<D extends object = Record<string, unknown>> {
-  id: number;
-  documentId?: string;
-  title?: string;
-  description?: string;
-  slug?: string;
-  image?: ImageProps;
-  author?: string;
-  featured?: boolean;
-  publishedAt?: string;
-  createdAt?: string;
-  updatedAt?: string;
 }
 
 export interface SubscribeProps extends Base<"blocks.subscribe"> {

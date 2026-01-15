@@ -6,6 +6,7 @@ import { formatDate } from "@/utils/format-date";
 import { getGlobalSettings } from "@/data/loaders";
 
 export interface CardProps {
+  id: number;
   documentId: string;
   title: string;
   description: string;

@@ -14,7 +14,6 @@ async function loader(slug: string) {
 }
 
 interface ParamsProps {
-  params: Promise<{ slug: string }>;
   searchParams: Promise<{ page?: string; query?: string }>;
 }
 
@@ -23,7 +22,6 @@ const EventCard = (props: Readonly<CardProps>) => (
 );
 
 export default async function AllEventsRoute({
-  params,
   searchParams,
 }: ParamsProps) {
   const { query, page } = await searchParams;
@@ -32,7 +30,7 @@ export default async function AllEventsRoute({
   return (
     <div className="container">
       <div className="event-page">
-        <EventSignupForm blocks={blocks} eventId={event.documentId} />
+        <EventSignupForm blocks={blocks} eventId={event.documentId ?? ""} />
       </div>
       <ContentList
         headline="All Events"

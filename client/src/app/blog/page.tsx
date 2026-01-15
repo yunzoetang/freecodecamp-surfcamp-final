@@ -15,7 +15,7 @@ interface PageProps {
 }
 
 export default async function BlogRoute({ searchParams }: PageProps) {
-  const { page, query } = await searchParams;
+  const { query } = await searchParams;
   const { blocks } = await loader("blog");
   return (
     <div className="blog-page">

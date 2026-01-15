@@ -1,7 +1,7 @@
-import type { ArticleProps, Block } from "@/types";
+import type { ArticleProps } from "@/types";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/utils/format-date";
-import { getContentBySlug } from "@/data/loaders";
+import { getContentBySlug, getGlobalSettings } from "@/data/loaders";
 
 import { BlogCard } from "@/components/BlogCard";
 import { HeroSection } from "@/components/blocks/HeroSection";
@@ -17,6 +17,12 @@ async function loader(slug: string) {
   const article = data[0];
   if (!article) throw notFound();
   return { article: article as ArticleProps, blocks: article?.blocks };
+}
+
+async function gloader() {
+  const { data } = await getGlobalSettings();
+  if (!data) throw new Error("Failed to fetch global settings");
+  return { placeholder: data?.placeholder };
 }
 
 interface ArticleOverviewProps {
@@ -37,25 +43,27 @@ function ArticleOverview({
     </div>
   );
 }
+
 export default async function SingleBlogRoute({ params }: PageProps) {
   const slug = (await params).slug;
   const { article, blocks } = await loader(slug);
   const { title, author, publishedAt, description, image } = article;
+  const { placeholder } = await gloader();
   
   return (
     <div>
       <HeroSection
         id={article.id}
-        heading={title}
+        heading={title ?? ""}
         theme="orange"
-        image={image}
+        image={image ?? placeholder.url}
         author={author}
-        publishedAt={formatDate(publishedAt)}
+        publishedAt={formatDate(publishedAt ?? "")}
         darken={true}
       />
       
       <div className="container">
-        <ArticleOverview headline="In this blog" description={description} />
+        <ArticleOverview headline="In this blog" description={description ?? ""} />
         <BlockRenderer blocks={blocks} />
         <ContentList
           headline="Featured Articles"
