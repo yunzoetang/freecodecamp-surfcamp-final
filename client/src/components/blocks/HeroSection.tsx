@@ -1,8 +1,15 @@
 import Link from "next/link";
 import { StrapiImage } from "../StrapiImage";
 import type { HeroSectionProps } from "@/types";
+import { getGlobalSettings } from "@/data/loaders";
 
-export function HeroSection({
+async function loader() {
+  const { data } = await getGlobalSettings();
+  if (!data) throw new Error("Failed to fetch global settings");
+  return { placeholder: data?.placeholder };
+}
+
+export async function HeroSection({
   theme,
   heading,
   cta,
@@ -12,12 +19,13 @@ export function HeroSection({
   publishedAt,
   darken = false,
 }: Readonly<HeroSectionProps>) {
+  const { placeholder } = await loader();
   return (
     <section className="hero">
       <div className="hero__background">
         <StrapiImage
-          src={image.url}
-          alt={image.alternativeText || "No alternative text provided"}
+          src={image?.url || placeholder.url }
+          alt={image?.alternativeText || "No alternative text provided"}
           className="hero__background-image"
           width={1920}
           height={1080}

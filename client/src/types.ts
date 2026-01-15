@@ -18,15 +18,16 @@ export interface LogoProps {
 }
 
 type ComponentType =
-| "blocks.hero-section"
-| "blocks.info-block"
-| "blocks.featured-article"
-| "blocks.subscribe";
+  | "blocks.hero-section"
+  | "blocks.info-block"
+  | "blocks.featured-article"
+  | "blocks.subscribe"
+  | "blocks.heading"
+  | "blocks.paragraph-with-image"
+  | "blocks.paragraph"
+  | "blocks.full-image";
 
-interface Base<
-  T extends ComponentType,
-  D extends object = Record<string, unknown>
-> {
+interface Base<T extends ComponentType, D extends object = Record<string, unknown>> {
   id: number;
   __component?: T;
   documentId?: string;
@@ -36,7 +37,15 @@ interface Base<
   data?: D;
 }
 
-export type Block = HeroSectionProps | InfoBlockProps | FeaturedArticleProps | SubscribeProps;
+export type Block =
+  | HeroSectionProps
+  | InfoBlockProps
+  | FeaturedArticleProps
+  | SubscribeProps
+  | HeadingProps
+  | ParagraphWithImageProps
+  | ParagraphProps
+  | FullImageProps;
 
 export interface HeroSectionProps extends Base<"blocks.hero-section"> {
   theme: "turquoise" | "orange";
@@ -71,16 +80,53 @@ export interface SubscribeProps extends Base<"blocks.subscribe"> {
   buttonText: string;
 }
 
-export interface ArticleProps {
+export interface ArticleProps extends PageBase {
+}
+
+export interface EventProps extends PageBase {
+  price: string;
+  startDate: string;
+}
+
+interface PageBase<D extends object = Record<string, unknown>> {
   id: number;
-  documentId: string;
-  title: string;
-  description: string;
-  slug: string;
+  documentId?: string;
+  title?: string;
+  description?: string;
+  slug?: string;
+  image?: ImageProps;
+  author?: string;
+  featured?: boolean;
+  publishedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface SubscribeProps extends Base<"blocks.subscribe"> {
+  headline: string;
+  content: string;
+  placeholder: string;
+  buttonText: string;
+}
+
+export interface HeadingProps extends Base<"blocks.heading"> {
+  heading: string;
+  linkId?: string;
+}
+
+export interface ParagraphWithImageProps extends Base<"blocks.paragraph-with-image"> {
+  content: string;
   image: ImageProps;
-  author: string;
-  featured: boolean;
-  publishedAt: string;
-  createdAt: string;
-  updatedAt: string;
+  reversed?: boolean;
+  imageLandscape?: boolean;
+}
+
+export interface ParagraphProps extends Base<"blocks.paragraph"> {
+  content: string;
+}
+
+export interface FullImageProps extends Base<"blocks.full-image"> {
+  id: number;
+  __component: "blocks.full-image";
+  image: ImageProps;
 }
